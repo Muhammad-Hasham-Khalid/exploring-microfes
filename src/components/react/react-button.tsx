@@ -1,35 +1,24 @@
-import React, {
-  ButtonHTMLAttributes,
-  MouseEventHandler,
-  PropsWithChildren,
-} from "react";
+import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import { createRoot } from "react-dom/client";
 
-type ReactButtonProps = {
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  type: ButtonHTMLAttributes<HTMLButtonElement>["type"];
-};
+interface ReactButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
-function ReactButton(
-  props: PropsWithChildren<ReactButtonProps>
-) {
-  const { onClick = () => {}, type, children } = props;
+function ReactButton(props: PropsWithChildren<ReactButtonProps>) {
+  const { children, ...otherProps } = props;
 
-  return (
-    <div>
-      <button onClick={onClick} type={type}>
-        {children}
-      </button>
-    </div>
-  );
+  return <button {...otherProps}>{children}</button>;
 }
 
 export class ReactButtonElement extends HTMLElement {
   handleclick: ReactButtonProps["onClick"];
-  type: ReactButtonProps["type"] = "button";
+  type: ReactButtonProps["type"];
 
   connectedCallback() {
     const root = createRoot(this);
-    root.render(<ReactButton onClick={this.handleclick} type={this.type} children={this.innerHTML} />);
+    root.render(
+      <ReactButton onClick={this.handleclick} type={this.type}>
+        {this.innerHTML}
+      </ReactButton>
+    );
   }
 }

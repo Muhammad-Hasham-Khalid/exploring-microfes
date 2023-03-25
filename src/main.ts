@@ -4,10 +4,9 @@ import VueForm from "./components/vue/vue-form.vue";
 
 customElements.define("react-button", ReactButtonElement);
 
-createApp(VueForm).mount("#vue-app");
+const app = createApp(VueForm);
+app.mount("#vue-app");
 
 if (VueForm.compilerOptions && VueForm.compilerOptions.isCustomElement) {
   VueForm.compilerOptions.isCustomElement("react-button");
 }
-
-export default {};
